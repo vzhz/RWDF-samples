@@ -1,0 +1,9 @@
+{
+  "name": "RWDF-samples",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-inline": "^0.3.4",
+    "grunt-obfuscator": "^0.1.0"
+  }
+}

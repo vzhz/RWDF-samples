@@ -1,13 +1,30 @@
 /*
 Udacity's (growing) library for grading sites modified with DevTools.
 
-Version 0.03
+Version 0.04
 
-What's new in version 0.03?
-  - all tests abstracted into UdaciTests class
+What's new in version 0.04?
+  - React!
 
 Cameron Pittman 2015
 */
+
+/*
+Downloading scripts for React and JSX
+
+TODO:
+  * set CSS too?
+*/
+(function() {
+  var react = document.createElement('script');
+  react.src = "http://fb.me/react-0.12.2.js";
+  // react.type = "text/jsx";
+  var jsx = document.createElement('script');
+  jsx.src = "http://fb.me/JSXTransformer-0.12.2.js";
+  // jsx.type = "text/jsx";
+  document.head.appendChild(react);
+  document.head.appendChild(jsx);
+})()
 
 // TODO: stop using this and switch to Array.prototype.slice()
 function toArray(obj) {
@@ -25,7 +42,8 @@ Abstraction allows us to create multiple scopes for test runs.
 
 data: some data scoped to this instance of UdaciTests
 */
-var UdaciTests = function(data) {
+var UdaciTests = function(title, data) {
+  this.title = title;
   var iframeElem;
   this.testMediaQueries = function(udArr) {
     /*
@@ -176,33 +194,33 @@ var UdaciTests = function(data) {
     // gd.onclick = function(){alert("Great job! Here's your code: \n" + _code)}
   }
 }
-UdaciTests.prototype.isViewportWidthCorrect = function(expected) {
+UdaciTests.prototype.testViewportWidth = function(expected) {
   var isCorrect = false;
   var width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
   width === expected[0] ? isCorrect = true : isCorrect = false;
   // console.log("width: " + isCorrect);
   return isCorrect;
 }
-UdaciTests.isViewportHeightCorrect = function(expected) {
+UdaciTests.testViewportHeight = function(expected) {
   var isCorrect = false;
   var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
   height === expected[0] ? isCorrect = true : isCorrect = false;
   // console.log("height: " + isCorrect);
   return isCorrect;
 }
-UdaciTests.prototype.isUACorrect = function(expected) {
+UdaciTests.prototype.testUA = function(expected) {
   var isCorrect = false;
   var ua = window.navigator.userAgent;
   ua === expected[0] ? isCorrect = true : isCorrect = false;
   return isCorrect;
 }
-UdaciTests.prototype.isDPRCorrect = function(expected) {
+UdaciTests.prototype.testDPR = function(expected) {
   var isCorrect = false;
   var dpr = window.devicePixelRatio;
   dpr === expected[0] ? isCorrect = true : isCorrect = false;
   return isCorrect;
 }
-UdaciTests.prototype.isViewportSet = function() {
+UdaciTests.prototype.testViewportMetaTag = function() {
   var hasRightMeta = false;
   var correctViewportContent = 'width=device-width,initial-scale=1.0';
   var metas = document.querySelectorAll('meta');
@@ -225,70 +243,105 @@ UdaciTests.prototype.isViewportSet = function() {
 }
 
 // The grading engine lives here.
-function runGradeLoop(grader, arr, code) {
-  var isCorrect = false;
+// TODO: does the grade loop belong in UdaciTests?
+function runGradeLoop(grader, tests, code, refreshRate) {
+  /*
+  React!
+  
+  TODO:
+    * make sure that react exists first
+    * CSS!
+  */
 
-  grader.createResultsDisplay();
+  var testLine = React.createClass({
+    getInitialState: function() {
+      return ({data: testResults}) // ?
+    },
+    componentDidMount: function() {
+      setInterval(function() {
+        var testCorrect = this.props.test(this.props.params);
 
-  var testStatuses = [];
-  for (_i in arr) testStatuses.push(arr[_i]);
-
-  function hasTestStatusDiff(obj) {
-    var update = false;
-    for (t in testStatuses) {
-      if (obj.desc === testStatuses[t].desc && obj.correct === testStatuses[t].correct) {
-        obj.needsUpdate = false;
-        obj.isNewTest = false;
-        break;
-      } else if (obj.desc === testStatuses[t].desc && obj.correct !== testStatuses[t].correct) {
-        obj.needsUpdate = true;
-        obj.isNewTest = false;
-        testStatuses[t].correct = obj.correct;
-        update = obj;
-      } else {
-        obj.isNewTest = true;
-        obj.needsUpdate = true;
-        update = obj;
-        console.log(obj, testStatuses[t]);
-      }
+      }, 100)
+    },
+    render: function() {
+      this.setState({data: testResults})
+      // var tf = isCorrect;
+      return (
+        <div>{this.props.testName} <span>tf</span></div>
+      )
     }
-    return update;
-  }
+  })
 
-  var gradeLoop = setInterval(function() {
-    for (i in arr) {
-      var testCorrect = arr[i].test(arr[i].params);
-      var testObj = {
-        desc: arr[i].desc,
-        correct: testCorrect
-      }
-      grader.updateResultsDisplay(testObj);
-      if (arr.indexOf(arr[i]) === 0) {
-        isCorrect = testCorrect;
-      } else {
-        isCorrect = isCorrect && testCorrect;
-      }
+  var gradeDisplay = React.createClass({
+    // getInitialState: function() {
+    //   return
+    // },
+    // componentDidMount: function() {
+    //   setInterval()
+    // },
+    // runTests: function() {
+    //   var allCorrect = false;
+    //   var testResults = this.props.data.map(function() {
+    //     // the actual test call
+    //   })
+    // },
+    render: function() {
+      // this.runTests();
+      return (
+        // <div style="display: flex" className="gradeDisplay">
+        //   <div style="width:80%">
+        //     <h3>{this.props.grader}</h3>
+        //   </div>
+        //   <div style="width:20%">Udacity Logo</div>
+        //   <testLine data={this.state.data} />
+        //   {tests}
+        // </div>
+        <div>Hi!</div>
+      );
     }
+  })
+  React.render(
+    // <gradeDisplay data=tests pollInterval=refreshRate />,
+    <gradeDisplay />,
+    document.body
+  );
 
-    // An ugly hack to make sure that all of the tests are displayed
-    // properly before the code is displayed.
-    // TODO: Remove when possible!
-    var gradeDisplays = document.querySelectorAll('.grade-display > div');
-    gradeDisplays = toArray(gradeDisplays);
-    var allGreen = false;
-    for (ag in gradeDisplays) {
-      if (gradeDisplays.indexOf(gradeDisplays[ag]) === 0 && gradeDisplays[ag].style.color === 'green') {
-        allGreen = true;
-      } else if (gradeDisplays[ag].style.color === 'green') {
-        allGreen = allGreen && true;
-      }
-    }
+  // var gradeLoop = setInterval(function() {
+  //   for (i in tests) {
+  //     var testCorrect = tests[i].test(tests[i].params);
+  //     var testObj = {
+  //       grader: grader.title,
+  //       desc: tests[i].desc,
+  //       correct: testCorrect
+  //     }
+  //     grader.updateResultsDisplay(testObj);
+  //     if (tests.indexOf(tests[i]) === 0) {
+  //       isCorrect = testCorrect;
+  //     } else {
+  //       isCorrect = isCorrect && testCorrect;
+  //     }
+  //   }
 
-    if (isCorrect && allGreen) {
-      updateResultsDisplay(testObj, function(){
-        clearInterval(gradeLoop)
-        displayCode(code);
-      })
-    }
-  }, 1000)
+
+  //   // An ugly hack to make sure that all of the tests are displayed
+  //   // properly before the code is displayed.
+  //   // TODO: Remove when possible!
+  //   var gradeDisplays = document.querySelectorAll('.grade-display > div');
+  //   gradeDisplays = toArray(gradeDisplays);
+  //   var allGreen = false;
+  //   for (ag in gradeDisplays) {
+  //     if (gradeDisplays.indexOf(gradeDisplays[ag]) === 0 && gradeDisplays[ag].style.color === 'green') {
+  //       allGreen = true;
+  //     } else if (gradeDisplays[ag].style.color === 'green') {
+  //       allGreen = allGreen && true;
+  //     }
+  //   }
+
+  //   if (isCorrect && allGreen) {
+  //     grader.updateResultsDisplay(testObj, function(){
+  //       clearInterval(gradeLoop)
+  //       grader.displayCode(code);
+  //     })
+  //   }
+  // }, refreshRate)
 }
