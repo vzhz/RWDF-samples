@@ -19,6 +19,7 @@ function toArray(obj) {
 function isViewportSet() {
   var hasRightMeta = false;
   var correctViewportContent = 'width=device-width,initial-scale=1.0';
+  var correctViewportContent2 = 'width=device-width,initial-scale=1';
   var metas = document.querySelectorAll('meta');
   metas = toArray(metas);
   metas.forEach(function(val) {
@@ -30,7 +31,7 @@ function isViewportSet() {
       content = "";
       name = "";
     }
-    if (name === 'viewport' && content === correctViewportContent) {
+    if (name === 'viewport' && (content === correctViewportContent || content === correctViewportContent2)) {
       hasRightMeta = true;
     }
   })
