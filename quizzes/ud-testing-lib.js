@@ -31,7 +31,7 @@ function isViewportSet() {
       content = "";
       name = "";
     }
-    if (name === 'viewport' && (content === correctViewportContent || content === correctViewportContent2)) {
+    if (name === 'viewport' && ((content === correctViewportContent) || (content === correctViewportContent2))) {
       hasRightMeta = true;
     }
   })
