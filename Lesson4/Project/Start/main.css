@@ -12,7 +12,7 @@ body {
 }
 
 h1, h2, h3, h4, h5 {
-  margin: 0; 
+  margin: 0;
 }
 
 header, nav, footer, section, article, div {
@@ -29,7 +29,7 @@ ul {
 /*
  *
  * Common
- * 
+ *
  */
 
 .news__more {
@@ -197,7 +197,8 @@ main {
 .top-news__item a {
   text-decoration: none;
   color: #666;
-  padding: 1.5em inherit;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
 }
 
 .top-news__item a:hover,
@@ -223,7 +224,7 @@ main {
 
 .scores__table th,
 .scores__table td {
-  padding: 1em; 
+  padding: 1em;
 }
 
 .scores__table th {
@@ -336,7 +337,8 @@ main {
 .snippet__title a {
   text-decoration: none;
   color: #666;
-  padding: 1.5em inherit;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
 }
 
 .snippet__title a:hover,
