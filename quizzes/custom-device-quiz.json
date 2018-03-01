@@ -27,7 +27,10 @@
       "description": "Device Pixel Ratio is 3.5",
       "definition": {
         "get": "DPR",
-        "equals": 3.5
+        "isInRange": {
+      "lower": 3.4999,
+      "upper": 3.5001
+    }
       }
     }
   ]
